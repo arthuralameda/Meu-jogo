@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Adivinhação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jogo de Adivinhação</h1>
+    <div class="container">
+        <p>Tente adivinhar um número entre 1 e 100!</p>
+        <input type="number" id="numeroInput" placeholder="Digite um número">
+        <button onclick="verificarNumero()">Tentar</button>
+        <p id="mensagem"></p>
+        <button id="reiniciar" class="hidden" onclick="reiniciarJogo()">Jogar Novamente</button>
+    </div>
+
+    <script>
+        let numeroSecreto = Math.floor(Math.random() * 100) + 1;
+        let tentativas = 0;
+
+        function verificarNumero() {
+            let numero = parseInt(document.getElementById("numeroInput").value);
+            let mensagem = document.getElementById("mensagem");
+            let botaoReiniciar = document.getElementById("reiniciar");
+            tentativas++;
+
+            if (isNaN(numero) || numero < 1 || numero > 100) {
+                mensagem.innerText = "Digite um número válido entre 1 e 100.";
+                mensagem.style.color = "red";
+                return;
+            }
+
+            if (numero === numeroSecreto) {
+                mensagem.innerText = `Parabéns! Você acertou em ${tentativas} tentativas.`;
+                mensagem.style.color = "green";
+                botaoReiniciar.classList.remove("hidden");
+            } else if (numero < numeroSecreto) {
+                mensagem.innerText = "Tente um número maior!";
+                mensagem.style.color = "red";
+            } else {
+                mensagem.innerText = "Tente um número menor!";
+                mensagem.style.color = "red";
+            }
+        }
+
+        function reiniciarJogo() {
+            numeroSecreto = Math.floor(Math.random() * 100) + 1;
+            tentativas = 0;
+            document.getElementById("mensagem").innerText = "";
+            document.getElementById("numeroInput").value = "";
+            document.getElementById("reiniciar").classList.add("hidden");
+        }
+
+        // Permitir pressionar Enter para enviar o número
+        document.getElementById("numeroInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                verificarNumero();
+            }
+        });
+    </script>
+
+</body>
+</html>
